@@ -11,5 +11,6 @@ etcd_data_dir: "/var/lib/etcd/data"
 etcd_config_dir: "/etc/etcd"
 etcd_config_file: "etcd.conf"
 etcd_ansible_groups_name: "etcd"
-etcd_listen_client_urls: "http://{{ groups[etcd_ansible_groups_name][0] }}:2379"
-etcd_advertise_client_urls: "http://{{ groups[etcd_ansible_groups_name][0] }}:2379"
+etcd_client_port: 2379
+etcd_listen_client_urls: "http://{{ groups[etcd_ansible_groups_name][0] }}:{{ etcd_client_port }}"
+etcd_advertise_client_urls: "http://{{ groups[etcd_ansible_groups_name][0] }}:{{ etcd_client_port }}"

@@ -1,0 +1,13 @@
+# redis
+vm.overcommit_memory = 1
+net.core.somaxconn = 1024
+
+# tcp优化
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_fin_timeout = 30
+
+net.ipv4.tcp_keepalive_intvl = 10
+net.ipv4.tcp_keepalive_probes = 3
+net.ipv4.tcp_keepalive_time = 30

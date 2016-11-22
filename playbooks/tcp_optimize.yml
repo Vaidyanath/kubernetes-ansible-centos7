@@ -1,0 +1,11 @@
+---
+- name: tcp_optimize
+  hosts: all
+  # become: yes
+  # become_user: root
+  # become_method: sudo
+  remote_user: root
+  gather_facts: true
+  roles:
+    - role: tcp_optimize
+  tags: [tcp_optimize]

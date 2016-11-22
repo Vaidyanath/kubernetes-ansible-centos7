@@ -1,0 +1,8 @@
+---
+- name: tcp ip optimize
+  template: src=my_optimize.conf.j2 dest=/etc/sysctl.d/my_optimize.conf owner=root group=root mode=0644
+  tags: [tcp_optimize]
+
+- name: apply optimize
+  command: sysctl -p -f /etc/sysctl.d/my_optimize.conf
+  tags: [tcp_optimize]

@@ -1,0 +1,8 @@
+---
+# 防火墙规则
+- name: Insert firewall rule
+  iptables: table=filter chain=INPUT action=insert protocol=tcp destination_port={{ etcd_client_port }} jump=ACCEPT comment="etcd client"
+
+# save iptables rules
+- name: Save iptables rules
+  shell: iptables-save > /etc/sysconfig/iptables
