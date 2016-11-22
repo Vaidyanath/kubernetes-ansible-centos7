@@ -1,0 +1,12 @@
+---
+- name: Reload daemon
+  command: systemctl daemon-reload
+  tags: [docker]
+
+- name: Restart rsyslog
+  command: systemctl restart rsyslog.service
+  tags: [docker]
+
+- name: Restart docker
+  command: systemctl restart docker.service
+  tags: [docker]

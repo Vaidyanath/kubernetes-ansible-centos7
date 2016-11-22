@@ -1,0 +1,7 @@
+---
+# 开机启动
+- name: Start docker service when system start
+  command: systemctl enable docker.service
+  notify:
+    - Reload daemon
+  tags: [docker]

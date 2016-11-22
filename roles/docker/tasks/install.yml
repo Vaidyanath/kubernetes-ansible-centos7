@@ -1,0 +1,33 @@
+---
+# 判断docker是否安装
+- name: To judge whether docker service install
+  stat: path=/usr/bin/docker
+  changed_when: False
+  register: judge_result
+  tags: [docker]
+
+# 安装
+- name: Copy docker dependency file
+  copy: src=docker-engine-selinux-1.10.3-1.el7.centos.noarch.rpm dest=/tmp/ owner=root group=root mode=0755
+  when: judge_result.stat.exists == false
+  tags: [docker]
+
+- name: Install other dependency
+  yum:  name=policycoreutils-python state=present
+  when: judge_result.stat.exists == false
+  tags: [docker]
+
+- name: Install docker dependency
+  yum: name=/tmp/docker-engine-selinux-1.10.3-1.el7.centos.noarch.rpm state=present
+  when: judge_result.stat.exists == false
+  tags: [docker]
+
+- name: Copy docker file to remote server
+  copy: src=docker-engine-1.10.3-1.el7.centos.x86_64.rpm dest=/tmp owner=root group=root mode=0755
+  when: judge_result.stat.exists == false
+  tags: [docker]
+
+- name: Install docker
+  yum: name=/tmp/docker-engine-1.10.3-1.el7.centos.x86_64.rpm state=present
+  when: judge_result.stat.exists == false
+  tags: [docker]
