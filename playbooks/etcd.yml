@@ -1,0 +1,11 @@
+---
+- name: Deploy etcd
+  hosts: etcd
+  # become: yes
+  # become_user: root
+  # become_method: sudo
+  remote_user: root
+  gather_facts: true
+  roles:
+    - role: etcd
+  tags: [etcd]

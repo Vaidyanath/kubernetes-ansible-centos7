@@ -1,0 +1,13 @@
+---
+# ansible galaxy 信息
+galaxy_info:
+  author: imaginefei
+  description: etcd v3.0.13 service
+  license: GPL
+  min_ansible_version: 1.9
+  platforms:
+  - name: EL
+    versions:
+    - 7
+# 角色依赖
+dependencies: []

@@ -1,0 +1,50 @@
+---
+# 添加etcd用户
+- name: Add etcd user
+  user: name={{ etcd_user_name }}
+        shell=/sbin/nologin
+        home={{ etcd_home_path }}
+        comment="etcd user"
+        system=yes
+        state=present
+  tags: [etcd]
+
+
+# 创建 {{etcd_config_dir}} 文件夹
+- name: Create {{etcd_config_dir}} directory
+  file: path={{etcd_config_dir}}
+        state=directory
+        owner=root
+        group=root
+        mode=0755
+  tags: [etcd]
+
+
+# 复制etcd.conf文件
+- name: Copy etcd.conf file
+  template: src=etcd.conf.j2
+            dest={{ etcd_config_dir }}/{{ etcd_config_file }}
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Restart etcd
+  tags: [etcd]
+
+
+# 复制systemd service文件
+- name: Copy etcd systemd service file
+  template: src=etcd.service.j2
+            dest=/usr/lib/systemd/system/etcd.service
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Reload daemon
+  tags: [etcd]
+
+
+# 开机启动
+- name: Enable etcd service when system start
+  command: systemctl enable etcd.service
+  tags: [etcd]

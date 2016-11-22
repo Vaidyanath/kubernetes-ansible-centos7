@@ -1,0 +1,18 @@
+---
+# 判断etcd是否安装
+- name: To judge whether etcd install
+  stat: path=/usr/local/bin/etcd
+  changed_when: False
+  register: etcd_result
+  tags: [etcd]
+
+# 安装
+- name: Install etcd binary
+  copy: src=etcd dest=/usr/local/bin owner=root group=root mode=0755
+  when: etcd_result.stat.exists == false
+  tags: [etcd]
+
+- name: Install etcdctl binary
+  copy: src=etcdctl dest=/usr/local/bin owner=root group=root mode=0755
+  when: etcd_result.stat.exists == false
+  tags: [etcd]

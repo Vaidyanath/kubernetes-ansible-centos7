@@ -1,0 +1,6 @@
+---
+- include: install.yml
+- include: configuration.yml
+- name: Start etcd service
+  command: systemctl start etcd.service
+  tags: [etcd]

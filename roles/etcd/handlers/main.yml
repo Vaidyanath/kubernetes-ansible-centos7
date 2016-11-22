@@ -1,0 +1,8 @@
+---
+- name: Reload daemon
+  command: systemctl daemon-reload
+  tags: [etcd]
+
+- name: Restart etcd
+  command: systemctl restart etcd.service
+  tags: [etcd]
