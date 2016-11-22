@@ -12,5 +12,5 @@ etcd_config_dir: "/etc/etcd"
 etcd_config_file: "etcd.conf"
 etcd_ansible_groups_name: "etcd"
 etcd_client_port: 2379
-etcd_listen_client_urls: "http://{{ groups[etcd_ansible_groups_name][0] }}:{{ etcd_client_port }}"
+etcd_listen_client_urls: "http://{{ groups[etcd_ansible_groups_name][0] }}:{{ etcd_client_port }},http://127.0.0.1:{{ etcd_client_port }}"
 etcd_advertise_client_urls: "http://{{ groups[etcd_ansible_groups_name][0] }}:{{ etcd_client_port }}"
