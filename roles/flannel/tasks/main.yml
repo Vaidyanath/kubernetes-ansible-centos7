@@ -1,0 +1,6 @@
+---
+- include: install.yml
+- include: configuration.yml
+- name: Start flanneld service
+  command: systemctl start flanneld.service
+  tags: [flannel]

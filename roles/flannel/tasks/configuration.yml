@@ -1,0 +1,81 @@
+---
+# 复制systemd service文件
+- name: Copy systemd service file
+  template: src=flanneld.service.j2
+            dest=/usr/lib/systemd/system/flanneld.service
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Reload daemon
+  tags: [flannel]
+
+- name: Check flanneld.service enable
+  shell: systemctl list-unit-files | grep flanneld.service | awk '{ print $2}'
+  register: check_result
+  changed_when: False
+  tags: [flannel]
+
+# 开机启动
+- name: Start flanneld.service when system start
+  command: systemctl enable flanneld.service
+  when: check_result.stdout != "enabled"
+  tags: [flannel]
+
+# 复制 flannel 配置文件
+- name: Copy flannel config file
+  template: src=flanneld.j2
+            dest=/etc/sysconfig/flanneld
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Restart flanneld
+  tags: [flannel]
+
+# 复制 docker-network 
+- name: Copy docker-network
+  template: src=docker-network.j2
+            dest=/etc/sysconfig/docker-network
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Restart flanneld
+  tags: [flannel]
+
+# 创建 /usr/lib/systemd/system/docker.service.d 文件夹
+- name: Create /usr/lib/systemd/system/docker.service.d directory
+  file: path=/usr/lib/systemd/system/docker.service.d
+        state=directory
+        owner=root
+        group=root
+        mode=0755
+  tags: [flannel]
+
+# 复制 flannel.conf 到 /usr/lib/systemd/system/docker.service.d
+- name: Copy flannel.conf to /usr/lib/systemd/system/docker.service.d
+  template: src=flannel.conf.j2
+            dest=/usr/lib/systemd/system/docker.service.d/flannel.conf
+            owner=root
+            group=root
+            mode=0644
+
+# 复制flannel etcd shell
+- name: Copy flannel etcd shell file
+  template: src=flanel_etcd_config.sh.j2
+            dest=/usr/libexec/flannel/flanel_etcd_config.sh
+            owner=root
+            group=root
+            mode=0755
+  register: shell_result
+  tags: [flannel]
+
+# 执行上面的脚本
+- name: Exec shell
+  command: sh /usr/libexec/flannel/flanel_etcd_config.sh
+  when: shell_result.changed == true
+  notify:
+    - Restart flanneld
+    - Restart docker
+  tags: [flannel]

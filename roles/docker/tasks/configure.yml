@@ -1,7 +1,12 @@
 ---
+- name: Check docker.service enable
+  shell: systemctl list-unit-files | grep docker.service | awk '{ print $2}'
+  register: check_result
+  changed_when: False
+  tags: [docker]
+
 # 开机启动
 - name: Start docker service when system start
   command: systemctl enable docker.service
-  notify:
-    - Reload daemon
+  when: check_result.stdout != "enabled"
   tags: [docker]

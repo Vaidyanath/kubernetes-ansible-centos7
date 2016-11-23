@@ -1,0 +1,33 @@
+---
+# 判断flannel是否安装
+- name: To judge whether flannel install
+  stat: path=/usr/local/bin/flanneld
+  changed_when: False
+  register: flannel_result
+  tags: [flannel]
+
+# 安装
+- name: Install flannel binary
+  copy: src=flanneld dest=/usr/local/bin owner=root group=root mode=0755
+  when: flannel_result.stat.exists == false
+  tags: [flannel]
+
+- name: Create /usr/libexec/flannel directory
+  file: path=/usr/libexec/flannel
+        state=directory
+        owner=root
+        group=root
+        mode=0755
+  when: flannel_result.stat.exists == false
+  tags: [flannel]
+
+- name: Install mk-docker-opts.sh
+  copy: src=mk-docker-opts.sh dest=/usr/libexec/flannel/ owner=root group=root mode=0755
+  when: flannel_result.stat.exists == false
+  tags: [flannel]
+
+- name: Install etcdctl binary
+  copy: src=etcdctl dest=/usr/local/bin owner=root group=root mode=0755
+  when: flannel_result.stat.exists == false
+  tags: [flannel]
+

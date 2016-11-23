@@ -1,0 +1,7 @@
+---
+etcd_client_port: 2379
+master_ansible_groups_name: "masters"
+flannel_etcd_url: "http://{{ groups[master_ansible_groups_name][0] }}:{{ etcd_client_port }}"
+flannel_etcd_key: "/kube-centos/network"
+flannel_network: "172.16.0.0/16"
+flannel_subnetlen: 24

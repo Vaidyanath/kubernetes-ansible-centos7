@@ -1,0 +1,12 @@
+---
+- name: Reload daemon
+  command: systemctl daemon-reload
+  tags: [flannel]
+
+- name: Restart flanneld
+  command: systemctl restart flanneld.service
+  tags: [flannel,flannel_restart]
+
+- name: Restart docker
+  command: systemctl restart docker.service
+  tags: [flannel]

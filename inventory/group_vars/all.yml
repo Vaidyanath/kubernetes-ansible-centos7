@@ -1,0 +1,25 @@
+---
+####################### etcd #######################
+# 用户和组相关变量
+etcd_user_name: "etcd"
+etcd_group_name: "etcd"
+etcd_home_path: "/var/lib/etcd"
+
+
+# etcd.conf相关变量
+etcd_name: "master"
+etcd_data_dir: "/var/lib/etcd/data"
+etcd_config_dir: "/etc/etcd"
+etcd_config_file: "etcd.conf"
+etcd_ansible_groups_name: "etcd"
+etcd_client_port: 2379
+etcd_listen_client_urls: "http://{{ groups[etcd_ansible_groups_name][0] }}:{{ etcd_client_port }},http://127.0.0.1:{{ etcd_client_port }}"
+etcd_advertise_client_urls: "http://{{ groups[etcd_ansible_groups_name][0] }}:{{ etcd_client_port }}"
+
+
+####################### flannel #######################
+master_ansible_groups_name: "masters"
+flannel_etcd_url: "http://{{ groups[master_ansible_groups_name][0] }}:{{ etcd_client_port }}"
+flannel_etcd_key: "/kube-centos/network"
+flannel_network: "172.20.0.0/16"
+flannel_subnetlen: 24

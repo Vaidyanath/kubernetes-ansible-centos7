@@ -9,4 +9,4 @@
 
 - name: Restart docker
   command: systemctl restart docker.service
-  tags: [docker]
+  tags: [docker,docker_restart]

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# etcdctl --endpoints {{ flannel_etcd_url }} get {{ flannel_etcd_key }}/config;
+
+# if [ $? -ne 0 ];
+# then
+	etcdctl --endpoints {{ flannel_etcd_url }} set \
+    {{ flannel_etcd_key }}/config \
+    '{ "Network": "{{ flannel_network }}", "SubnetLen": {{ flannel_subnetlen }}, "Backend": { "Type": "vxlan" } }';
+# fi
