@@ -5,4 +5,4 @@
 
 - name: Restart etcd
   command: systemctl restart etcd.service
-  tags: [etcd,restart]
+  tags: [etcd,etcd_restart]
