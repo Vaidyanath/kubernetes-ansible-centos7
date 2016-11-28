@@ -1,0 +1,127 @@
+---
+# 添加etcd用户
+- name: Add kube user
+  user: name={{ kube_user }}
+        shell=/sbin/nologin
+        createhome=no
+        comment="Kubernetes user"
+        system=yes
+        state=present
+  tags: [kubernetes-master]
+
+
+# 复制 systemd service 文件
+- name: Copy kube-apiserver.service file
+  template: src=kube-apiserver.service.j2
+            dest=/usr/lib/systemd/system/kube-apiserver.service
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Reload daemon
+  tags: [kubernetes-master]
+
+- name: Copy kube-controller-manager.service file
+  template: src=kube-controller-manager.service.j2
+            dest=/usr/lib/systemd/system/kube-controller-manager.service
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Reload daemon
+  tags: [kubernetes-master]
+
+- name: Copy kube-scheduler.service file
+  template: src=kube-scheduler.service.j2
+            dest=/usr/lib/systemd/system/kube-scheduler.service
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Reload daemon
+  tags: [kubernetes-master]
+
+
+# 复制kubernetes master 各组件的配置文件
+- name: Create {{ kube_config_dir }} directory
+  file: path={{ kube_config_dir }}
+        state=directory
+        owner=root
+        group=root
+        mode=0755
+  tags: [kubernetes-master]
+
+- name: Copy {{ kube_apiserver_config_file }} file
+  template: src=kube-apiserver.j2
+            dest={{ kube_config_dir }}/{{ kube_apiserver_config_file }}
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Restart apiserver
+  tags: [kubernetes-master]
+
+- name: Copy {{ kube_controller_manager_config_file }} file
+  template: src=kube-controller-manager.j2
+            dest={{ kube_config_dir }}/{{ kube_controller_manager_config_file }}
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Restart controller-manager
+  tags: [kubernetes-master]
+
+- name: Copy {{ kube_scheduler_config_file }} file
+  template: src=kube-scheduler.j2
+            dest={{ kube_config_dir }}/{{ kube_scheduler_config_file }}
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Restart scheduler
+  tags: [kubernetes-master]
+
+
+# 创建apiserver默认https文件夹
+- name: Create /var/run/kubernetes directory
+  file: path=/var/run/kubernetes
+        state=directory
+        owner={{ kube_user }}
+        group={{ kube_user }}
+        mode=0755
+  tags: [kubernetes-master]
+
+
+# 开机启动
+- name: Check kube-apiserver.service enable
+  shell: systemctl list-unit-files | grep kube-apiserver.service | awk '{ print $2}'
+  register: apiserver_result
+  changed_when: False
+  tags: [kubernetes]
+
+- name: Start kube-apiserver service when system start
+  command: systemctl enable kube-apiserver.service
+  when: apiserver_result.stdout != "enabled"
+  tags: [kubernetes]
+
+- name: Check kube-controller-manager.service enable
+  shell: systemctl list-unit-files | grep kube-controller-manager.service | awk '{ print $2}'
+  register: controller_manager_result
+  changed_when: False
+  tags: [kubernetes]
+
+- name: Start kube-controller-manager service when system start
+  command: systemctl enable kube-controller-manager.service
+  when: controller_manager_result.stdout != "enabled"
+  tags: [kubernetes]
+
+- name: Check kube-scheduler.service enable
+  shell: systemctl list-unit-files | grep kube-scheduler.service | awk '{ print $2}'
+  register: scheduler_result
+  changed_when: False
+  tags: [kubernetes]
+
+- name: Start kube-scheduler service when system start
+  command: systemctl enable kube-scheduler.service
+  when: scheduler_result.stdout != "enabled"
+  tags: [kubernetes]

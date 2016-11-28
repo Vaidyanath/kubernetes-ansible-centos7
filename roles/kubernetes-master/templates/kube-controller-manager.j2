@@ -1,0 +1,12 @@
+KUBE_LOGTOSTDERR="{{ kube_logtostderr }}"
+KUBE_LOG_LEVEL="{{ kube_log_level }}"
+
+KUBE_MASTER="{{ kube_master }}"
+
+# --root-ca-file="": If set, this root certificate authority will be included in
+# service account's token secret. This must be a valid PEM-encoded CA bundle.
+KUBE_CONTROLLER_MANAGER_ROOT_CA_FILE="{{ kube_controller_manager_root_ca_file }}"
+
+# --service-account-private-key-file="": Filename containing a PEM-encoded private
+# RSA key used to sign service account tokens.
+KUBE_CONTROLLER_MANAGER_SERVICE_ACCOUNT_PRIVATE_KEY_FILE="{{ kube_controller_manager_service_account_private_key_file }}"

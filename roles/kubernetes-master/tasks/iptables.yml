@@ -1,0 +1,36 @@
+---
+# 防火墙规则
+- name: Insert firewall rule( kube insecure port )
+  iptables: table=filter
+            chain=INPUT
+            action=insert
+            protocol=tcp
+            destination_port={{ kube_insecure_port }}
+            jump=ACCEPT
+            comment="kube insecure port"
+  tags: [kubernetes-master]
+
+- name: Insert firewall rule( kube secure port )
+  iptables: table=filter
+            chain=INPUT
+            action=insert
+            protocol=tcp
+            destination_port={{ kube_secure_port }}
+            jump=ACCEPT
+            comment="kube secure port"
+  tags: [kubernetes-master]
+
+- name: Insert firewall rule( kubelet port )
+  iptables: table=filter
+            chain=INPUT
+            action=insert
+            protocol=tcp
+            destination_port={{ kubelet_port }}
+            jump=ACCEPT
+            comment="kubelet port"
+  tags: [kubernetes-master]
+
+# save iptables rules
+- name: Save iptables rules
+  shell: iptables-save > /etc/sysconfig/iptables
+  tags: [kubernetes-master]

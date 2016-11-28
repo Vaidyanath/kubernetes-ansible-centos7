@@ -1,0 +1,18 @@
+[Unit]
+Description=Kubernetes Controller Manager
+Documentation=https://github.com/kubernetes/kubernetes
+
+[Service]
+EnvironmentFile=-{{ kube_config_dir }}/{{ kube_controller_manager_config_file }}
+User={{ kube_user }}
+ExecStart=/usr/local/bin/kube-controller-manager \
+								$KUBE_LOGTOSTDERR \
+                                $KUBE_LOG_LEVEL \
+                                $KUBE_MASTER \
+                                $KUBE_CONTROLLER_MANAGER_ROOT_CA_FILE \
+                                $KUBE_CONTROLLER_MANAGER_SERVICE_ACCOUNT_PRIVATE_KEY_FILE
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

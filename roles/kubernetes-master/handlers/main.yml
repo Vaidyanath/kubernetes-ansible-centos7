@@ -1,0 +1,16 @@
+---
+- name: Reload daemon
+  command: systemctl daemon-reload
+  tags: [kubernetes-master]
+
+- name: Restart apiserver
+  command: systemctl restart kube-apiserver.service
+  tags: [kubernetes-master]
+
+- name: Restart controller-manager
+  command: systemctl restart kube-controller-manager.service
+  tags: [kubernetes-master]
+
+- name: Restart scheduler
+  command: systemctl restart kube-scheduler.service
+  tags: [kubernetes-master]

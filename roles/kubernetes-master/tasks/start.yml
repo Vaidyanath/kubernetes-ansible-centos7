@@ -1,0 +1,13 @@
+---
+# 启动
+- name: Start kube-apiserver
+  command: systemctl start kube-apiserver.service
+  tags: [kubernetes-master]
+
+- name: Start kube-controller-manager
+  command: systemctl start kube-controller-manager.service
+  tags: [kubernetes-master]
+
+- name: Start kube-scheduler
+  command: systemctl start kube-scheduler.service
+  tags: [kubernetes-master]
