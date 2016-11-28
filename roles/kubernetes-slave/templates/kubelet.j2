@@ -1,0 +1,28 @@
+# --logtostderr=true: log to standard error instead of files
+KUBE_LOGTOSTDERR="{{ kube_logtostderr }}"
+
+#  --v=0: log level for V logs
+KUBE_LOG_LEVEL="{{ kube_log_level }}"
+
+# --address=0.0.0.0: The IP address for the Kubelet to serve on (set to 0.0.0.0 for all interfaces)
+NODE_ADDRESS="{{ kube_node_address }}"
+
+# --port=10250: The port for the Kubelet to serve on. Note that "kubectl logs" will not work if you set this flag.
+NODE_PORT="--port={{ kubelet_port }}"
+
+# --hostname-override="": If non-empty, will use this string as identification instead of the actual hostname.
+NODE_HOSTNAME="{{ kube_node_hostname }}"
+
+# --api-servers=[]: List of Kubernetes API servers for publishing events, 
+# and reading pods and services. (ip:port), comma separated.
+KUBELET_API_SERVER="{{ kubelet_api_server }}"
+
+# --allow-privileged=false: If true, allow containers to request privileged mode. [default=false]
+KUBE_ALLOW_PRIV="{{ kube_allow_priv }}"
+
+# pod infrastructure container
+# KUBELET_POD_INFRA_CONTAINER="--pod-infra-container-image=registry.access.redhat.com/rhel7/pod-infrastructure:latest"
+KUBELET_POD_INFRA_CONTAINER="{{ kubelet_pod_infra_container }}"
+
+# Add your own!
+KUBELET_ARGS="{{ kubelet_args }}"

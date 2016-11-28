@@ -1,0 +1,9 @@
+---
+# 启动
+- name: Start kubelet
+  command: systemctl start kubelet.service
+  tags: [kubernetes-slave]
+
+- name: Start kube-proxy
+  command: systemctl start kube-proxy.service
+  tags: [kubernetes-slave]

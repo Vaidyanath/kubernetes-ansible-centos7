@@ -1,0 +1,30 @@
+---
+# 用户和组相关
+kube_user: "kube"
+
+# 配置相关
+kube_config_dir: "/etc/kubernetes"
+
+kubelet_config_file: "kubelet"
+kube_proxy_config_file: "proxy"
+
+masters_ansible_groups_name: "masters"
+
+# 端口
+kubelet_port: 10250
+
+# kube公用
+kube_logtostderr: "--logtostderr=true"
+kube_log_level: "--v=0"
+kube_master: "--master={{ groups[masters_ansible_groups_name][0] }}:{{ kube_insecure_port }}"
+kube_allow_priv: "--allow-privileged=false"
+
+# kube-slave 公用
+kube_node_hostname: "--hostname-override="
+
+# kubelet
+kubelet_work_dir: "/var/lib/kubelet"
+kube_node_address: "--address={{ ansible_default_ipv4.address }}"
+kubelet_api_server: "--api-servers={{ groups[masters_ansible_groups_name][0] }}:{{ kube_insecure_port }}"
+kubelet_pod_infra_container: "--pod-infra-container-image=docker.io/kubernetes/pause"
+kubelet_args: ""

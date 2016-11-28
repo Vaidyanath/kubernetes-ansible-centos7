@@ -1,0 +1,85 @@
+---
+# 复制 systemd service 文件
+- name: Copy kubelet.service file
+  template: src=kubelet.service.j2
+            dest=/usr/lib/systemd/system/kubelet.service
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Reload daemon
+  tags: [kubernetes-slave]
+
+- name: Copy kube-proxy.service file
+  template: src=kube-proxy.service.j2
+            dest=/usr/lib/systemd/system/kube-proxy.service
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Reload daemon
+  tags: [kubernetes-slave]
+
+# 复制kubernetes slave 各组件的配置文件
+- name: Create {{ kube_config_dir }} directory
+  file: path={{ kube_config_dir }}
+        state=directory
+        owner=root
+        group=root
+        mode=0755
+  tags: [kubernetes-slave]
+
+- name: Copy {{ kubelet_config_file }} file
+  template: src=kubelet.j2
+            dest={{ kube_config_dir }}/{{ kubelet_config_file }}
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Restart kubelet
+  tags: [kubernetes-slave]
+
+- name: Copy {{ kube_proxy_config_file }} file
+  template: src=kube-proxy.j2
+            dest={{ kube_config_dir }}/{{ kube_proxy_config_file }}
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Restart kube-proxy
+  tags: [kubernetes-slave]
+
+
+# 创建kubelet work dir
+- name: Create {{ kubelet_work_dir }} directory
+  file: path={{ kubelet_work_dir }}
+        state=directory
+        owner=root
+        group=root
+        mode=0755
+  tags: [kubernetes-slave]
+
+
+# 开机启动
+- name: Check kubelet.service enable
+  shell: systemctl list-unit-files | grep kubelet.service | awk '{ print $2}'
+  register: kubelet_result
+  changed_when: False
+  tags: [kubernetes-slave]
+
+- name: Start kubelet service when system start
+  command: systemctl enable kubelet.service
+  when: kubelet_result.stdout != "enabled"
+  tags: [kubernetes-slave]
+
+- name: Check kube-proxy.service enable
+  shell: systemctl list-unit-files | grep kube-proxy.service | awk '{ print $2}'
+  register: kube_proxy_result
+  changed_when: False
+  tags: [kubernetes-slave]
+
+- name: Start kube-proxy.service service when system start
+  command: systemctl enable kube-proxy.service
+  when: kube_proxy_result.stdout != "enabled"
+  tags: [kubernetes-slave]
+

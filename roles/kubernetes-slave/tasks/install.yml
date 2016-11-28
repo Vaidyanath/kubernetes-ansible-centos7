@@ -1,0 +1,35 @@
+---
+# 判断kube-proxy、kubelet、kubectl是否安装
+- name: To judge whether kubelet install
+  stat: path=/usr/local/bin/kubelet
+  changed_when: False
+  register: kubelet_result
+  tags: [kubernetes-slave]
+
+- name: To judge whether kube-proxy install
+  stat: path=/usr/local/bin/kube-proxy
+  changed_when: False
+  register: kube_proxy_result
+  tags: [kubernetes-slave]
+
+- name: To judge whether kubectl install
+  stat: path=/usr/local/bin/kubectl
+  changed_when: False
+  register: kubectl_result
+  tags: [kubernetes-slave]
+
+# 安装
+- name: Install kubelet
+  copy: src=kubelet dest=/usr/local/bin owner=root group=root mode=0755
+  when: kubelet_result.stat.exists == false
+  tags: [kubernetes-slave]
+
+- name: Install kube-proxy
+  copy: src=kube-proxy dest=/usr/local/bin owner=root group=root mode=0755
+  when: kube_proxy_result.stat.exists == false
+  tags: [kubernetes-slave]
+
+- name: Install kubectl
+  copy: src=kubectl dest=/usr/local/bin owner=root group=root mode=0755
+  when: kubectl_result.stat.exists == false
+  tags: [kubernetes-slave]

@@ -1,0 +1,16 @@
+---
+# 防火墙规则
+- name: Insert firewall rule( kubelet port )
+  iptables: table=filter
+            chain=INPUT
+            action=insert
+            protocol=tcp
+            destination_port={{ kubelet_port }}
+            jump=ACCEPT
+            comment="kubelet port"
+  tags: [kubernetes-master]
+
+# save iptables rules
+- name: Save iptables rules
+  shell: iptables-save > /etc/sysconfig/iptables
+  tags: [kubernetes-master]

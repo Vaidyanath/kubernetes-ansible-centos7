@@ -1,0 +1,12 @@
+---
+- name: Reload daemon
+  command: systemctl daemon-reload
+  tags: [kubernetes-slave]
+
+- name: Restart kubelet
+  command: systemctl restart kubelet.service
+  tags: [kubernetes-slave]
+
+- name: Restart kube-proxy
+  command: systemctl restart kube-proxy.service
+  tags: [kubernetes-slave]

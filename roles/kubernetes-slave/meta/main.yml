@@ -1,0 +1,13 @@
+---
+# ansible galaxy 信息
+galaxy_info:
+  author: imaginefei
+  description: kubernetes slave v1.4.6
+  license: GPL
+  min_ansible_version: 2.2
+  platforms:
+  - name: EL
+    versions:
+    - 7
+# 角色依赖
+dependencies: []
