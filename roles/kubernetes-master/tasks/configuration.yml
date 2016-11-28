@@ -97,31 +97,31 @@
   shell: systemctl list-unit-files | grep kube-apiserver.service | awk '{ print $2}'
   register: apiserver_result
   changed_when: False
-  tags: [kubernetes]
+  tags: [kubernetes-master]
 
 - name: Start kube-apiserver service when system start
   command: systemctl enable kube-apiserver.service
   when: apiserver_result.stdout != "enabled"
-  tags: [kubernetes]
+  tags: [kubernetes-master]
 
 - name: Check kube-controller-manager.service enable
   shell: systemctl list-unit-files | grep kube-controller-manager.service | awk '{ print $2}'
   register: controller_manager_result
   changed_when: False
-  tags: [kubernetes]
+  tags: [kubernetes-master]
 
 - name: Start kube-controller-manager service when system start
   command: systemctl enable kube-controller-manager.service
   when: controller_manager_result.stdout != "enabled"
-  tags: [kubernetes]
+  tags: [kubernetes-master]
 
 - name: Check kube-scheduler.service enable
   shell: systemctl list-unit-files | grep kube-scheduler.service | awk '{ print $2}'
   register: scheduler_result
   changed_when: False
-  tags: [kubernetes]
+  tags: [kubernetes-master]
 
 - name: Start kube-scheduler service when system start
   command: systemctl enable kube-scheduler.service
   when: scheduler_result.stdout != "enabled"
-  tags: [kubernetes]
+  tags: [kubernetes-master]
