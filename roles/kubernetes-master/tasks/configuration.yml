@@ -1,5 +1,5 @@
 ---
-# 添加etcd用户
+# 添加kube用户
 - name: Add kube user
   user: name={{ kube_user }}
         shell=/sbin/nologin
@@ -81,6 +81,17 @@
     - Restart scheduler
   tags: [kubernetes-master]
 
+# 复制service account文件
+- name: Copy {{ kube_service_account_file_name }} file
+  copy: src=service_account_key.pem
+        dest={{ kube_config_dir }}/{{ kube_service_account_file_name }}
+        owner=root
+        group=root
+        mode=0644
+  notify:
+    - Restart apiserver
+    - Restart controller-manager
+  tags: [kubernetes-master]
 
 # 创建apiserver默认https文件夹
 - name: Create /var/run/kubernetes directory

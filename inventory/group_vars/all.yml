@@ -50,6 +50,9 @@ kube_log_level: "--v=0"
 kube_master: "--master={{ groups[masters_ansible_groups_name][0] }}:{{ kube_insecure_port }}"
 kube_allow_priv: "--allow-privileged=false"
 
+# master公用
+kube_service_account_file_name: "service_account_key.pem"
+
 # apiserver
 kube_etcd_servers: "--etcd-servers={{ etcd_advertise_client_urls }}"
 kube_api_address: "--insecure-bind-address=0.0.0.0"
@@ -63,10 +66,13 @@ kube_admission_control: "--admission-control=NamespaceLifecycle, \
 kube_api_client_ca_file: "--client-ca-file="
 kube_api_tls_cert_file: "--tls-cert-file="
 kube_api_tls_private_key_file: "--tls-private-key-file="
+kube_api_service_account_key_file: "--service-account-key-file=\
+                                    {{ kube_config_dir }}/{{ kube_service_account_file_name }}"
 
 # controller-manager
 kube_controller_manager_root_ca_file: "--root-ca-file="
-kube_controller_manager_service_account_private_key_file: "--service-account-private-key-file="
+kube_controller_manager_service_account_private_key_file: "--service-account-private-key-file=\
+                                                          {{ kube_config_dir }}/{{ kube_service_account_file_name }}"
 
 # scheduler
 kube_scheduler_args: ""
