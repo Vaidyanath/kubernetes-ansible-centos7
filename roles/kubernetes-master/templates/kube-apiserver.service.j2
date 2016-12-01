@@ -19,7 +19,8 @@ ExecStart=/usr/local/bin/kube-apiserver \
                         $KUBE_ADMISSION_CONTROL \
                         $KUBE_API_CLIENT_CA_FILE \
                         $KUBE_API_TLS_CERT_FILE \
-                        $KUBE_API_TLS_PRIVATE_KEY_FILE
+                        $KUBE_API_TLS_PRIVATE_KEY_FILE \
+                        $KUBE_API_ARGS
 Restart=on-failure
 Type=notify
 LimitNOFILE=65536
