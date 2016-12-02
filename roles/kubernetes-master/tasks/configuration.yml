@@ -84,7 +84,7 @@
 # 复制service account文件
 - name: Copy {{ kube_service_account_file_name }} file
   copy: src=service_account_key.pem
-        dest={{ kube_config_dir }}/{{ kube_service_account_file_name }}
+        dest={{ kube_service_account_path }}/{{ kube_service_account_file_name }}
         owner=root
         group=root
         mode=0644

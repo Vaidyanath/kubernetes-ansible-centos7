@@ -22,6 +22,7 @@ kube_log_level: "--v=0"
 kube_master: "--master={{ groups[masters_ansible_groups_name][0] }}:{{ kube_insecure_port }}"
 
 # master公用
+kube_service_account_path: "{{ kube_config_dir }}"
 kube_service_account_file_name: "service_account_key.pem"
 
 # apiserver

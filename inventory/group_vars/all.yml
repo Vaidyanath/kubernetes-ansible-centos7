@@ -1,7 +1,8 @@
 ---
-
+####################### 全局公用 #######################
 etcd_ansible_groups_name: "etcd"
 masters_ansible_groups_name: "masters"
+
 
 ####################### etcd #######################
 # 用户和组相关变量
@@ -34,10 +35,11 @@ kube_user: "kube"
 
 # 配置相关
 kube_config_dir: "/etc/kubernetes"
-
 kube_apiserver_config_file: "apiserver"
 kube_controller_manager_config_file: "controller-manager"
 kube_scheduler_config_file: "scheduler"
+kubelet_config_file: "kubelet"
+kube_proxy_config_file: "proxy"
 
 # 端口
 kube_insecure_port: 8080
@@ -51,6 +53,7 @@ kube_master: "--master=http://{{ groups[masters_ansible_groups_name][0] }}:{{ ku
 kube_allow_priv: "--allow-privileged=false"
 
 # master公用
+kube_service_account_path: "{{ kube_config_dir }}"
 kube_service_account_file_name: "service_account_key.pem"
 
 # apiserver
@@ -78,10 +81,6 @@ kube_controller_manager_service_account_private_key_file: "--service-account-pri
 kube_scheduler_args: ""
 
 
-# kubelet 和 kube-proxy
-kubelet_config_file: "kubelet"
-kube_proxy_config_file: "proxy"
-
 # kube-slave 公用
 kube_node_hostname: "--hostname-override="
 kubelet_work_dir: "/var/lib/kubelet"
@@ -90,7 +89,8 @@ kube_node_address: "--address={{ ansible_default_ipv4.address }}"
 # kubelet_api_server: "--api-servers={{ groups[masters_ansible_groups_name][0] }}:{{ kube_insecure_port }}"
 kubelet_api_server: ""
 kubelet_pod_infra_container: "--pod-infra-container-image=docker.io/kubernetes/pause"
-kubelet_args: "--kubeconfig={{ kubelet_work_dir }}/kubeconfig --require-kubeconfig=true"
+kubelet_args: "--kubeconfig={{ kubelet_work_dir }}/kubeconfig --require-kubeconfig=true \
+              --cluster-dns=10.0.0.10 --cluster-domain=yjfcloud.local"
 
 # kube-proxy
 kube_proxy_args: "--kubeconfig={{ kubelet_work_dir }}/kubeconfig"

@@ -29,7 +29,8 @@ kube_node_address: "--address={{ ansible_default_ipv4.address }}"
 # kubelet_api_server: "--api-servers={{ groups[masters_ansible_groups_name][0] }}:{{ kube_insecure_port }}"
 kubelet_api_server: ""
 kubelet_pod_infra_container: "--pod-infra-container-image=docker.io/kubernetes/pause"
-kubelet_args: "--kubeconfig={{ kubelet_work_dir }}/kubeconfig --require-kubeconfig=true"
+kubelet_args: "--kubeconfig={{ kubelet_work_dir }}/kubeconfig --require-kubeconfig=true \
+              --cluster-dns=10.0.0.10 --cluster-domain=yjfcloud.local"
 
 # kube-proxy
 kube_proxy_args: "--kubeconfig={{ kubelet_work_dir }}/kubeconfig"
