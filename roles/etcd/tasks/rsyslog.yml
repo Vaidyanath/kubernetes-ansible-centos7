@@ -1,0 +1,19 @@
+---
+# 日志相关
+# 创建日志文件夹
+- name: Create etcd log directory
+  file: path=/var/log/etcd owner=root group=root mode=0755 state=directory
+  tags: [etcd]
+
+# rsyslog配置文件
+- name: Create rsyslog configure
+  template: src=rsyslog_etcd.conf.j2 dest=/etc/rsyslog.d/etcd.conf group=root owner=root mode=644
+  notify: 
+    - Restart rsyslog
+    - Restart etcd
+  tags: [etcd]
+
+# logrotate配置文件
+- name: Create logrotate configure
+  template: src=logrotate_etcd.j2 dest=/etc/logrotate.d/etcd owner=root group=root mode=644
+  tags: [etcd]

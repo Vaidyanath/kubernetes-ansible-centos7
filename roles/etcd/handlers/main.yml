@@ -6,3 +6,7 @@
 - name: Restart etcd
   command: systemctl restart etcd.service
   tags: [etcd,etcd_restart]
+
+- name: Restart rsyslog
+  command: systemctl restart rsyslog.service
+  tags: [etcd]
