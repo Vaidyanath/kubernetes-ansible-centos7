@@ -1,0 +1,35 @@
+---
+# 日志相关
+# 创建日志文件夹
+- name: Create kubernetes-slave log directory
+  file: path=/var/log/kube-slave owner=root group=root mode=0755 state=directory
+  tags: [kubernetes-slave]
+
+# logrotate配置文件
+- name: Create logrotate configure
+  template: src=logrotate_kube_slave.j2 dest=/etc/logrotate.d/kube_slave owner=root group=root mode=644
+  tags: [kubernetes-slave]
+
+# kubelet rsyslog配置文件
+- name: Create rsyslog configure
+  template: src=rsyslog_kubelet.conf.j2
+            dest=/etc/rsyslog.d/kubelet.conf
+            group=root
+            owner=root
+            mode=644
+  notify: 
+    - Restart rsyslog
+    - Restart kubelet
+  tags: [kubernetes-slave]
+
+# kube-proxy rsyslog配置文件
+- name: Create rsyslog configure
+  template: src=rsyslog_kube-proxy.conf.j2
+            dest=/etc/rsyslog.d/kube-proxy.conf
+            group=root
+            owner=root
+            mode=644
+  notify: 
+    - Restart rsyslog
+    - Restart kube-proxy
+  tags: [kubernetes-slave]
