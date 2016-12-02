@@ -1,6 +1,7 @@
 ---
 - include: install.yml
 - include: configure.yml
+- include: rsyslog.yml
 - name: Start docker service
   command: systemctl start docker.service
   tags: [docker]

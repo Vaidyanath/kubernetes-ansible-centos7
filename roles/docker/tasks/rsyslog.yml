@@ -1,0 +1,19 @@
+---
+# 日志相关
+# 创建日志文件夹
+- name: Create docker log directory
+  file: path=/var/log/docker owner=root group=root mode=0755 state=directory
+  tags: [docker]
+
+# rsyslog配置文件
+- name: Create rsyslog configure
+  template: src=rsyslog_docker.conf.j2 dest=/etc/rsyslog.d/docker.conf group=root owner=root mode=644
+  notify: 
+    - Restart rsyslog
+    - Restart docker
+  tags: [docker]
+
+# logrotate配置文件
+- name: Create logrotate configure
+  template: src=logrotate_docker.j2 dest=/etc/logrotate.d/docker owner=root group=root mode=644
+  tags: [docker]
