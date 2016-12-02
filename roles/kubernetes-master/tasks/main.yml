@@ -1,5 +1,6 @@
 ---
 - include: install.yml
 - include: configuration.yml
+- include: rsyslog.yml
 - include: iptables.yml
 - include: start.yml

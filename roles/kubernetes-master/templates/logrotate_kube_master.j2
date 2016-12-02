@@ -1,0 +1,9 @@
+/var/log/kube-master/*.log {
+  copytruncate
+  daily
+  rotate 7
+  dateext
+  nocompress
+  missingok
+  create 644 root root
+}

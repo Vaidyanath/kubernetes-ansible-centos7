@@ -1,0 +1,47 @@
+---
+# 日志相关
+# 创建日志文件夹
+- name: Create kubernetes-master log directory
+  file: path=/var/log/kube-master owner=root group=root mode=0755 state=directory
+  tags: [kubernetes-master]
+
+# logrotate配置文件
+- name: Create logrotate configure
+  template: src=logrotate_kube_master.j2 dest=/etc/logrotate.d/kube_master owner=root group=root mode=644
+  tags: [kubernetes-master]
+
+# apiserver rsyslog配置文件
+- name: Create rsyslog configure
+  template: src=rsyslog_apiserver.conf.j2
+            dest=/etc/rsyslog.d/kube_apiserver.conf
+            group=root
+            owner=root
+            mode=644
+  notify: 
+    - Restart rsyslog
+    - Restart apiserver
+  tags: [kubernetes-master]
+
+# controller manager rsyslog配置文件
+- name: Create rsyslog configure
+  template: src=rsyslog_controller_manager.conf.j2
+            dest=/etc/rsyslog.d/kube_controller_manager.conf
+            group=root
+            owner=root
+            mode=644
+  notify: 
+    - Restart rsyslog
+    - Restart controller-manager
+  tags: [kubernetes-master]
+
+# kube scheduler rsyslog配置文件
+- name: Create rsyslog configure
+  template: src=rsyslog_scheduler.conf.j2
+            dest=/etc/rsyslog.d/kube_scheduler.conf
+            group=root
+            owner=root
+            mode=644
+  notify: 
+    - Restart rsyslog
+    - Restart scheduler
+  tags: [kubernetes-master]

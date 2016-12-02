@@ -1,0 +1,3 @@
+if $programname == 'kube-controller-manager' then {
+   action(type="omfile" file="/var/log/kube-master/kube-controller-manager.log")
+}
