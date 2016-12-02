@@ -1,0 +1,19 @@
+---
+# 日志相关
+# 创建日志文件夹
+- name: Create flanneld log directory
+  file: path=/var/log/flanneld owner=root group=root mode=0755 state=directory
+  tags: [flannel]
+
+# rsyslog配置文件
+- name: Create rsyslog configure
+  template: src=rsyslog_flanneld.conf.j2 dest=/etc/rsyslog.d/flanneld.conf group=root owner=root mode=644
+  notify: 
+    - Restart rsyslog
+    - Restart flanneld
+  tags: [flannel]
+
+# logrotate配置文件
+- name: Create logrotate configure
+  template: src=logrotate_flanneld.j2 dest=/etc/logrotate.d/flanneld owner=root group=root mode=644
+  tags: [flannel]

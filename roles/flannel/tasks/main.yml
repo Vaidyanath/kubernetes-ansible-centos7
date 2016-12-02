@@ -1,6 +1,7 @@
 ---
 - include: install.yml
 - include: configuration.yml
+- include: rsyslog.yml
 - name: Start flanneld service
   command: systemctl start flanneld.service
   tags: [flannel]

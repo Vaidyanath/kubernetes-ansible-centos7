@@ -10,3 +10,7 @@
 - name: Restart docker
   command: systemctl restart docker.service
   tags: [flannel]
+
+- name: Restart rsyslog
+  command: systemctl restart rsyslog.service
+  tags: [flannel]
