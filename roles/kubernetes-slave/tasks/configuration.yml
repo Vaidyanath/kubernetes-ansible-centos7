@@ -59,6 +59,18 @@
         mode=0755
   tags: [kubernetes-slave]
 
+# 复制kubeconfig
+- name: Copy kubeconfig file
+  template: src=kubeconfig.j2
+            dest={{ kubelet_work_dir }}/kubeconfig
+            owner=root
+            group=root
+            mode=0644
+  notify:
+    - Restart kubelet
+    - Restart kube-proxy
+  tags: [kubernetes-slave]
+
 
 # 开机启动
 - name: Check kubelet.service enable

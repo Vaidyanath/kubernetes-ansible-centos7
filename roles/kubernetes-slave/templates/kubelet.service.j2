@@ -7,15 +7,15 @@ Requires=docker.service
 WorkingDirectory={{ kubelet_work_dir }}
 EnvironmentFile=-{{ kube_config_dir }}/{{ kubelet_config_file }}
 ExecStart=/usr/local/bin/kubelet \
-					${KUBE_LOGTOSTDERR} \
-                    ${KUBE_LOG_LEVEL} \
-                    ${NODE_ADDRESS} \
-                    ${NODE_PORT} \
-                    ${NODE_HOSTNAME} \
-                    ${KUBELET_API_SERVER} \
-                    ${KUBE_ALLOW_PRIV} \
-                    ${KUBELET_POD_INFRA_CONTAINER} \
-                    ${KUBELET_ARGS}
+					$KUBE_LOGTOSTDERR \
+                    $KUBE_LOG_LEVEL \
+                    $NODE_ADDRESS \
+                    $NODE_PORT \
+                    $NODE_HOSTNAME \
+                    $KUBELET_API_SERVER \
+                    $KUBE_ALLOW_PRIV \
+                    $KUBELET_POD_INFRA_CONTAINER \
+                    $KUBELET_ARGS
 Restart=on-failure
 KillMode=process
 
