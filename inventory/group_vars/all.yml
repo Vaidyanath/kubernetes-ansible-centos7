@@ -75,7 +75,7 @@ kube_api_service_account_key_file: "--service-account-key-file=\
 # controller-manager
 kube_controller_manager_root_ca_file: "--root-ca-file="
 kube_controller_manager_service_account_private_key_file: "--service-account-private-key-file=\
-                                                          {{ kube_config_dir }}/{{ kube_service_account_file_name }}"
+                                                          {{ kube_service_account_path }}/{{ kube_service_account_file_name }}"
 
 # scheduler
 kube_scheduler_args: ""
